@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polaroid_tamsung — สั่งสินค้า</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fdf6f0; color: #1a1a1a; padding: 16px; }
+.wrap { max-width: 520px; margin: 0 auto; }
+.shop-header { text-align: center; padding: 18px 16px 14px; background: #fff; border-radius: 16px; margin-bottom: 12px; border: 1px solid #f0e6e0; }
+.shop-name { font-size: 22px; font-weight: 700; color: #6d3b2e; }
+.shop-sub { font-size: 13px; color: #aaa; margin-top: 4px; }
+.tab-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.tab-btn { flex: 1; min-width: 70px; padding: 8px 4px; border-radius: 10px; border: 1px solid #e8d8d0; background: #fff; color: #999; font-size: 11px; cursor: pointer; font-weight: 600; text-align: center; transition: all 0.15s; }
+.tab-btn.active { background: #6d3b2e; border-color: #6d3b2e; color: #fff; }
+.section { background: #fff; border: 1px solid #f0e6e0; border-radius: 16px; padding: 16px 20px; margin-bottom: 12px; }
+.sec-title { font-size: 12px; font-weight: 700; color: #b07060; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.8px; }
+.info-box { background: #fff8f5; border: 1px solid #f0d8d0; border-radius: 10px; padding: 9px 13px; margin-bottom: 12px; font-size: 12px; color: #8b4d3d; line-height: 1.6; }
+.item-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #faf0ec; }
+.item-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.i-num { font-size: 12px; color: #ccc; min-width: 16px; padding-top: 2px; }
+.i-inner { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.i-name { font-size: 13px; font-weight: 600; color: #3a2020; }
+.i-sub { font-size: 11px; color: #aaa; }
+.sel-row { display: flex; gap: 6px; flex-wrap: wrap; }
+select { flex: 1; min-width: 110px; font-size: 12px; padding: 6px 8px; border-radius: 8px; border: 1px solid #e8d8d0; background: #fdf6f0; color: #1a1a1a; cursor: pointer; }
+.qty-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.qty-lbl { font-size: 12px; color: #aaa; }
+.qty-inp { width: 58px; font-size: 13px; padding: 5px 8px; border-radius: 8px; border: 1px solid #e8d8d0; background: #fdf6f0; color: #1a1a1a; }
+.p-badge { font-size: 12px; font-weight: 700; min-width: 60px; text-align: right; color: #ccc; padding-top: 2px; }
+.p-badge.on { color: #c0533a; }
+.warn { font-size: 11px; color: #e65100; background: #fff3e0; border-radius: 6px; padding: 3px 8px; display: inline-block; margin-top: 2px; }
+.add-btn { width: 100%; padding: 8px; border-radius: 8px; border: 1px dashed #e8d8d0; background: #fdf6f0; color: #b07060; font-size: 13px; cursor: pointer; margin-top: 10px; }
+.add-btn:hover { background: #fff0e8; }
+.rm-btn { font-size: 11px; color: #e53935; background: none; border: none; cursor: pointer; }
+.inner-box { background: #fdf6f0; border: 1px solid #f0e6e0; border-radius: 10px; padding: 11px; margin-top: 4px; }
+.ship-opt { display: flex; align-items: flex-start; gap: 10px; padding: 11px; border-radius: 10px; border: 1px solid #f0e6e0; cursor: pointer; margin-bottom: 8px; }
+.ship-opt:last-child { margin-bottom: 0; }
+.ship-opt.sel { border-color: #c0533a; background: #fff8f5; }
+.s-lbl { font-size: 13px; font-weight: 600; color: #3a2020; }
+.s-desc { font-size: 12px; color: #aaa; margin-top: 2px; }
+.del-box { background: #fff8f5; border: 1px solid #f0d8d0; border-radius: 14px; padding: 13px 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+.del-txt { font-size: 13px; font-weight: 600; color: #3a2020; }
+.del-sub { font-size: 12px; color: #aaa; margin-top: 2px; }
+.file-sec { background: #fff; border: 1px solid #f0e6e0; border-radius: 16px; padding: 16px 20px; margin-bottom: 12px; }
+.file-row { display: flex; align-items: center; gap: 12px; padding: 9px 11px; border-radius: 10px; background: #fdf6f0; border: 1px solid #f0e6e0; margin-bottom: 8px; }
+.file-row:last-child { margin-bottom: 0; }
+.total-sec { background: #fff; border-radius: 16px; padding: 16px 20px; margin-bottom: 12px; border: 1px solid #f0e6e0; }
+.t-row { display: flex; justify-content: space-between; font-size: 13px; color: #aaa; margin-bottom: 8px; }
+.t-row.grand { border-top: 1px solid #f0e6e0; padding-top: 11px; margin-top: 4px; margin-bottom: 0; }
+.t-row.grand .tl { font-size: 15px; font-weight: 700; color: #3a2020; }
+.t-row.grand .ta { font-size: 22px; font-weight: 700; color: #c0533a; }
+.t-row .ta { color: #3a2020; font-weight: 600; }
+.copy-btn { width: 100%; padding: 13px; border-radius: 12px; background: #6d3b2e; border: none; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.copy-btn:hover { background: #8b4d3d; }
+.copy-btn:active { transform: scale(0.98); }
+.copy-msg { font-size: 12px; color: #3B6D11; text-align: center; margin-top: 8px; min-height: 18px; }
+.bag-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.bag-lbl { display: flex; align-items: center; gap: 4px; font-size: 12px; cursor: pointer; padding: 5px 10px; border-radius: 8px; border: 1px solid #e8d8d0; background: #fdf6f0; transition: all 0.15s; }
+.bag-lbl.sel { border-color: #c0533a; background: #fff8f5; color: #c0533a; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="shop-header">
+  <div class="shop-name">📸 Polaroid_tamsung</div>
+  <div class="shop-sub">เลือกสินค้าที่ต้องการสั่ง แล้วดูราคารวมได้เลย</div>
+</div>
+
+<div class="tab-row">
+  <button class="tab-btn active" onclick="switchTab('print')">🖼 งานพิมพ์รูป</button>
+  <button class="tab-btn" onclick="switchTab('extra')">🃏 การ์ด เมโม & พวงกุญแจ</button>
+  <button class="tab-btn" onclick="switchTab('diecut')">✂️ สต๊ก Die-cut</button>
+  <button class="tab-btn" onclick="switchTab('sset')">🏷 สต๊ก Set</button>
+  <button class="tab-btn" onclick="switchTab('gift')">🎁 กิ๊ฟอะเวย์</button>
+</div>
+
+<div id="tab-print">
+  <div class="section"><div class="sec-title">รูปติดบัตร</div><div id="id-rows"></div></div>
+  <div class="section"><div class="sec-title">รูปอัด (ขนาดมาตรฐาน)</div><div id="std-rows"></div></div>
+  <div class="section">
+    <div class="sec-title">Custom ขนาด</div>
+    <div class="info-box">กรอกขนาด (หน่วย cm) • ขั้นต่ำ 1×1 cm • สูงสุด A4 (21×29.7 cm)<br>ราคาเริ่ม 2 บาท บวกตามพื้นที่เกิน 25 ตร.ซม.</div>
+    <div id="custom-rows"></div>
+    <button class="add-btn" onclick="customItems.push({w:5,h:5,coat:'ไม่เคลือบ',qty:1});renderCustom()">+ เพิ่มขนาด Custom</button>
+  </div>
+</div>
+
+<div id="tab-extra" style="display:none;">
+  <div class="section">
+    <div class="sec-title">Photocard</div>
+    <div class="info-box">เคลือบฟิล์มฟรีทุกแบบ • มีซองใสสวมให้ • คละลายเคลือบขั้นต่ำ 10 ใบ</div>
+    <div id="pc-rows"></div>
+    <button class="add-btn" onclick="pcItems.push({typeIdx:0,coat:'เคลือบใสเงา',qty:0});renderExtra()">+ เพิ่มรายการ</button>
+  </div>
+  <div class="section">
+    <div class="sec-title">Memo Pad <span style="font-size:11px;font-weight:400;color:#aaa;text-transform:none;letter-spacing:0;">8×8 cm • กระดาษการ์ดขาว 150 แกรม</span></div>
+    <div class="info-box">ขั้นต่ำ 6 ก้อน/ลาย</div>
+    <div id="memo-rows"></div>
+    <button class="add-btn" onclick="memoItems.push({optIdx:0,qty:0});renderExtra()">+ เพิ่มรายการ</button>
+  </div>
+  <div class="section">
+    <div class="sec-title">พวงกุญแจรูปภาพ <span style="font-size:11px;font-weight:400;color:#aaa;text-transform:none;letter-spacing:0;">2×2 นิ้ว</span></div>
+    <div class="info-box">ราคา 3 บาท/ชิ้น • เคลือบ +3 บาท • เคลือบขั้นต่ำ 10 ชิ้น/ลาย</div>
+    <div id="kp-rows"></div>
+    <button class="add-btn" onclick="kpItems.push({coat:'ไม่เคลือบ',qty:0});renderExtra()">+ เพิ่มรายการ</button>
+  </div>
+  <div class="section">
+    <div class="sec-title">พวงกุญแจ Die-cut</div>
+    <div class="info-box">ราคา 5 บาท/ชิ้น • เคลือบ 8 แบบ • ขั้นต่ำ 15 ชิ้น/ลาย</div>
+    <div id="kd-rows"></div>
+    <button class="add-btn" onclick="kdItems.push({coat:'เคลือบใสเงา',qty:0});renderExtra()">+ เพิ่มรายการ</button>
+  </div>
+</div>
+
+<div id="tab-diecut" style="display:none;">
+  <div class="section">
+    <div class="sec-title">Die-cut 50% <span style="font-size:11px;font-weight:400;color:#aaa;text-transform:none;letter-spacing:0;">ตัดตามรูปทรงบางส่วน</span></div>
+    <div class="info-box">PP Glossy + เคลือบใสเงาฟรี • คละได้ 2 ลาย/แผ่น • ไม่มีขั้นต่ำ</div>
+    <div id="dc50-rows"></div>
+    <button class="add-btn" onclick="dc50Items.push({sizeIdx:3,coat:'เคลือบใสเงา',sheets:0});renderDiecut()">+ เพิ่มรายการ</button>
+  </div>
+  <div class="section">
+    <div class="sec-title">Die-cut 100% <span style="font-size:11px;font-weight:400;color:#aaa;text-transform:none;letter-spacing:0;">ตัดตามรูปทรงทั้งหมด</span></div>
+    <div class="info-box">PP Sticker + เคลือบ PVC • A4 เท่านั้น • คละได้ 2 ลาย/แผ่น</div>
+    <div id="dc100-rows"></div>
+    <button class="add-btn" onclick="dc100Items.push({coat:'เคลือบใสเงา',sheets:0});renderDiecut()">+ เพิ่มรายการ</button>
+  </div>
+</div>
+
+<div id="tab-sset" style="display:none;">
+  <div class="section">
+    <div class="sec-title">Sticker Set (ราคาต่อชิ้น)</div>
+    <div class="info-box">เลือกขนาด + เคลือบ + จำนวน • คละขนาดและเคลือบได้<br>🎁 ฟรีถุงเมื่อยอดแต่ละรายการ ≥ 5 บาท</div>
+    <div id="bag-sel"></div>
+    <div id="sset-rows"></div>
+    <button class="add-btn" onclick="ssetItems.push({sizeIdx:0,coat:'เคลือบใสเงา',qty:1});renderSset()">+ เพิ่มรายการ</button>
+  </div>
+  <div class="section">
+    <div class="sec-title">แพ็กเกจจิ้งเสริม</div>
+    <div id="pkg-rows"></div>
+  </div>
+</div>
+
+<div id="tab-gift" style="display:none;">
+  <div class="section">
+    <div class="sec-title">เซ็ตกิ๊ฟอะเวย์ (รูป + สต๊ก รวมกัน)</div>
+    <div id="gift-rows"></div>
+    <button class="add-btn" onclick="giftItems.push({printIdx:0,printCoat:'ไม่เคลือบ',printQty:1,stickerSizeIdx:0,stickerCoat:'เคลือบใสเงา',stickerQty:10});renderGift()">+ เพิ่มเซ็ต</button>
+  </div>
+</div>
+
+<div class="section" style="margin-bottom:12px;">
+  <div class="sec-title">การจัดส่ง</div>
+  <label class="ship-opt sel" id="opt-post" onclick="selShip('post')">
+    <input type="radio" name="ship" checked>
+    <div><div class="s-lbl">ไปรษณีย์ <span style="font-weight:400;color:#aaa;">+40 บาท</span></div><div class="s-desc">ค่าจัดส่ง 40 บาท รวมในยอด</div></div>
+  </label>
+  <label class="ship-opt" id="opt-msg" onclick="selShip('msg')">
+    <input type="radio" name="ship">
+    <div><div class="s-lbl">ส่งแมสเซ็นเจอร์</div><div class="s-desc">ค่าจัดส่งจ่ายปลายทาง</div></div>
+  </label>
+</div>
+
+<div class="del-box">
+  <div style="font-size:22px;">🗓</div>
+  <div><div class="del-txt" id="del-txt">กรุณาเลือกสินค้าก่อน</div><div class="del-sub" id="del-sub">ระยะเวลาจะแสดงหลังเลือกรายการ</div></div>
+</div>
+
+<div class="file-sec">
+  <div class="sec-title">วิธีส่งไฟล์รูปให้เรา</div>
+  <div class="file-row"><div style="font-size:20px;">💬</div><div><div style="font-size:13px;font-weight:600;">LINE</div><div style="font-size:12px;color:#aaa;">ส่งไฟล์รูปมาทาง LINE หลังยืนยันออเดอร์</div></div></div>
+  <div class="file-row"><div style="font-size:20px;">📁</div><div><div style="font-size:13px;font-weight:600;">Google Drive / Google Photos</div><div style="font-size:12px;color:#aaa;">แชร์ลิงก์โฟลเดอร์มาได้เลย รองรับไฟล์ขนาดใหญ่</div></div></div>
+</div>
+
+<div class="total-sec">
+  <div class="t-row"><span class="tl">ค่าสินค้า</span><span class="ta" id="sub-disp">0.00 บาท</span></div>
+  <div class="t-row"><span class="tl">ค่าจัดส่ง</span><span class="ta" id="ship-disp">40.00 บาท</span></div>
+  <div class="t-row grand"><span class="tl">รวมทั้งหมด</span><span class="ta" id="total-disp">40.00 บาท</span></div>
+</div>
+
+<button class="copy-btn" onclick="copyOrder()">📋 คัดลอกสรุปออเดอร์ไปวางใน LINE</button>
+<div class="copy-msg" id="copy-msg"></div>
+</div>
+
+<script>
+// ============ CONFIG (แก้ราคาได้ที่นี่) ============
+const COATS = ['เคลือบใสเงา','เคลือบด้าน','เคลือบทะเลดาว','เคลือบประดายกาว','เคลือบกลิตเตอร์','เคลือบสายรุ้ง','เคลือบหัวใจใหญ่','เคลือบโฮโลแกรมลายจุด'];
+const SPECIAL_COATS = COATS.filter(c => c !== 'เคลือบใสเงา');
+
+// รูปติดบัตร
+const ID_ITEMS = [
+  { label:'รูปติดบัตร 1 นิ้ว', base:1, coat:1, frames:['กรอบขาว','เต็มใบ'] },
+  { label:'รูปติดบัตร 1.5 นิ้ว', base:1, coat:1, frames:['กรอบขาว','เต็มใบ'] },
+  { label:'รูปติดบัตร 2 นิ้ว', base:1.5, coat:1, frames:['กรอบขาว','เต็มใบ'] },
+];
+
+// รูปอัดมาตรฐาน
+const STD_ITEMS = [
+  { label:'รูปอัด 2x2 นิ้ว', base:2, coat:2 },
+  { label:'รูปอัด 2.5x3.5 นิ้ว (เท่าบัตรประชาชน)', base:2.5, coat:2.5, hasFrame:true, hasCorner:true },
+  { label:'รูปอัด 2.5x5 นิ้ว (เท่าล็อตตารี่)', base:2.5, coat:2.5 },
+  { label:'รูปอัด 2x3 นิ้ว', base:2, coat:3 },
+  { label:'รูปอัด 2x4 นิ้ว', base:2, coat:3 },
+  { label:'รูปอัด 2x6 นิ้ว', base:3, coat:3 },
+  { label:'รูปอัด 3x4 นิ้ว', base:3, coat:3 },
+  { label:'รูปอัด 3.5x5 นิ้ว', base:3, coat:3 },
+  { label:'รูปอัด 4x6 นิ้ว', base:5, coat:5, hasTwoSide:true, twoSide:10, twoSideCoat:20 },
+  { label:'รูปอัด 5x7 นิ้ว', base:10, coat:10 },
+  { label:'รูปอัด 6x8 นิ้ว', base:20, coat:15 },
+  { label:'รูปอัด A5', base:20, coat:15 },
+  { label:'รูปอัด A4', base:30, coat:20 },
+  { label:'รูปอัด A3', base:100, coat:0, noCoat:true },
+];
+const FRAMES = ['เต็มใบ','กรอบเท่า','กรอบโพลารอยด์'];
+
+// Custom price
+const C_BASE=2, C_AREA=25, C_RATE=(30-2)/(623.7-25);
+function calcCustom(w,h){ const a=w*h; return a<=C_AREA ? C_BASE : +(C_BASE+(a-C_AREA)*C_RATE).toFixed(2); }
+
+// Photocard
+const PC_TYPES = [
+  { label:'Photocard 1 ด้าน', price:5, desc:'กระดาษอาร์ตมัน 300 แกรม • เคลือบฟิล์มฟรี • ซองใสให้' },
+  { label:'Photocard 2 ด้าน', price:10, desc:'กระดาษอัดรูป 260 แกรม • เคลือบฟิล์มฟรี • ซองใสให้' },
+];
+
+// Memo Pad
+const MEMO_OPTS = [
+  { sheets:10, price:7 },
+  { sheets:15, price:10 },
+  { sheets:20, price:15 },
+];
+
+// Keychain
+const KP_BASE=3, KP_COAT=3, KP_COAT_MIN=10;
+const KD_PRICE=5, KD_MIN=15;
+
+// Die-cut 50%
+const DC50_SIZES = [
+  { size:'A7', clear:10, special:15 },
+  { size:'A6', clear:15, special:20 },
+  { size:'A5', clear:25, special:30 },
+  { size:'A4', clear:40, special:50 },
+];
+const DC100_CLEAR=40, DC100_SPECIAL=50;
+
+// Sticker Set
+const SSET_SIZES = [
+  { size:'3 cm', clear:1, special:1 },
+  { size:'3.5 cm', clear:1.2, special:1.5 },
+  { size:'4 cm', clear:1.4, special:1.6 },
+  { size:'5 cm', clear:1.6, special:2 },
+  { size:'6 cm', clear:2, special:2.5 },
+];
+const PKG_ITEMS = [
+  { label:'กระดาษรอง 3x3 นิ้ว', price:3 },
+  { label:'หัวแพ็ก 3x1.5 นิ้ว', price:2 },
+];
+const BAG_OPTS = ['ซอง PVC ใส','ถุงซีลฟอยล์','ซองฝากาว'];
+// ============ END CONFIG ============
+
+// State
+let idSel    = ID_ITEMS.map(()=>({coat:'ไม่เคลือบ',frame:'กรอบขาว',qty:0}));
+let stdSel   = STD_ITEMS.map(()=>({coat:'ไม่เคลือบ',side:'แบบด้านเดียว',frame:'เต็มใบ',corner:'ไม่ตัด',qty:0}));
+let customItems = [];
+let pcItems  = [{typeIdx:0,coat:'เคลือบใสเงา',qty:0}];
+let memoItems= [{optIdx:0,qty:0}];
+let kpItems  = [{coat:'ไม่เคลือบ',qty:0}];
+let kdItems  = [{coat:'เคลือบใสเงา',qty:0}];
+let dc50Items= [{sizeIdx:3,coat:'เคลือบใสเงา',sheets:0}];
+let dc100Items=[{coat:'เคลือบใสเงา',sheets:0}];
+let ssetItems= [{sizeIdx:0,coat:'เคลือบใสเงา',qty:0}];
+let ssetQty=1;
+let pkgSel   = PKG_ITEMS.map(()=>({include:false}));
+let giftItems= [{setQty:0,printIdx:0,printCoat:'ไม่เคลือบ',printQty:0,stickerSizeIdx:0,stickerCoat:'เคลือบใสเงา',stickerQty:0,hasDc50:false,dc50SizeIdx:0,dc50Coat:'เคลือบใสเงา',dc50Qty:1,hasPC:false,pcTypeIdx:0,pcCoat:'เคลือบใสเงา',pcQty:1,hasMemo:false,memoOptIdx:0,memoQty:6,hasKP:false,kpCoat:'ไม่เคลือบ',kpQty:0,hasKD:false,kdCoat:'เคลือบใสเงา',kdQty:0}];
+const GIFT_DC50 = DC50_SIZES.slice(0,3);
+function calcGiftTotal(s){
+  const pi=STD_ITEMS[s.printIdx], pU=pi.base+(s.printCoat!=='ไม่เคลือบ'?pi.coat:0);
+  const sz=SSET_SIZES[s.stickerSizeIdx], sU=s.stickerCoat==='เคลือบใสเงา'?sz.clear:sz.special;
+  let t=(pU*s.printQty)+(sU*s.stickerQty);
+  if(s.hasDc50){const dc=GIFT_DC50[s.dc50SizeIdx];t+=(SPECIAL_COATS.includes(s.dc50Coat)?dc.special:dc.clear)*s.dc50Qty;}
+  if(s.hasPC) t+=PC_TYPES[s.pcTypeIdx].price*s.pcQty;
+  if(s.hasMemo) t+=MEMO_OPTS[s.memoOptIdx].price*s.memoQty;
+  if(s.hasKP) t+=(KP_BASE+(s.kpCoat!=='ไม่เคลือบ'?KP_COAT:0))*s.kpQty;
+  if(s.hasKD) t+=KD_PRICE*s.kdQty;
+  // ต้องสั่งขั้นต่ำ 10 เซ็ตถ้ามี sticker, photocard, memo หรือ diecut
+  const needsMin10 = s.stickerQty>0 || s.hasDc50 || s.hasPC || s.hasMemo;
+  return {t, needsMin10};
+}
+let shipMethod='post', bagChoice='ซอง PVC ใส';
+
+// Tab
+function switchTab(t){
+  ['print','extra','diecut','sset','gift'].forEach(x=>{ document.getElementById('tab-'+x).style.display=x===t?'':'none'; });
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{ b.classList.toggle('active',['print','extra','diecut','sset','gift'][i]===t); });
+}
+
+// Shipping
+function selShip(v){
+  shipMethod=v;
+  document.getElementById('opt-post').classList.toggle('sel',v==='post');
+  document.getElementById('opt-msg').classList.toggle('sel',v==='msg');
+  recalc();
+}
+
+// Min qty helper
+function minQty(coat){ return coat!=='ไม่เคลือบ'?10:0; }
+function minQtyCoatMsg(coat){ return coat!=='ไม่เคลือบ'?'<span class="warn">⚠️ เคลือบขั้นต่ำ 10 ใบ/ลาย</span>':''; }
+
+// ===== RENDER ID =====
+function renderID(){
+  const c=document.getElementById('id-rows'); c.innerHTML='';
+  ID_ITEMS.forEach((item,i)=>{
+    const s=idSel[i];
+    const unitP=item.base+(s.coat!=='ไม่เคลือบ'?item.coat:0);
+    const price=s.qty>0?unitP*s.qty:0;
+    const row=document.createElement('div'); row.className='item-row';
+    row.innerHTML=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div class="i-name">${item.label}</div>
+        <div class="i-sub">${item.base} บาท / เคลือบ +${item.coat} บาท</div>
+        <div class="sel-row">
+          <select onchange="idSel[${i}].coat=this.value; if(this.value!=='ไม่เคลือบ'&&idSel[${i}].qty>0&&idSel[${i}].qty<10)idSel[${i}].qty=10; renderID()">
+            <option value="ไม่เคลือบ">ไม่เคลือบ</option>
+            ${COATS.map(c=>`<option value="${c}"${s.coat===c?' selected':''}>${c}</option>`).join('')}
+          </select>
+          <select onchange="idSel[${i}].frame=this.value;renderID()">
+            ${item.frames.map(f=>`<option value="${f}"${s.frame===f?' selected':''}>${f}</option>`).join('')}
+          </select>
+        </div>
+        <div class="qty-row">
+          <span class="qty-lbl">จำนวน</span>
+          <input class="qty-inp" type="number" min="0" max="999" value="${s.qty}" onchange="idSel[${i}].qty=this.value>0?Math.max(minQty(idSel[${i}].coat),+this.value):0;renderID()">
+          <span class="qty-lbl">ใบ</span>
+        </div>
+        ${minQtyCoatMsg(s.coat)}
+      </div>
+      <span class="p-badge${price>0?' on':''}">${price>0?price.toFixed(2)+' ฿':'-'}</span>`;
+    c.appendChild(row);
+  });
+  recalc();
+}
+
+// ===== RENDER STD =====
+function renderSTD(){
+  const c=document.getElementById('std-rows'); c.innerHTML='';
+  STD_ITEMS.forEach((item,i)=>{
+    const s=stdSel[i];
+    let unitP=item.base;
+    if(!item.noCoat&&s.coat!=='ไม่เคลือบ') unitP+=item.coat;
+    if(item.hasTwoSide&&s.side==='แบบสองด้าน') unitP=s.coat!=='ไม่เคลือบ'?item.twoSideCoat:item.twoSide;
+    const price=s.qty>0?unitP*s.qty:0;
+    const row=document.createElement('div'); row.className='item-row';
+    let extra='';
+    if(item.hasFrame) extra+=`<select onchange="stdSel[${i}].frame=this.value;renderSTD()">${FRAMES.map(f=>`<option value="${f}"${s.frame===f?' selected':''}>${f}</option>`).join('')}</select>`;
+    if(item.hasCorner) extra+=`<select onchange="stdSel[${i}].corner=this.value;renderSTD()"><option value="ไม่ตัด"${s.corner==='ไม่ตัด'?' selected':''}>ไม่ตัดมุม</option><option value="ตัด"${s.corner==='ตัด'?' selected':''}>ตัดมุม</option></select>`;
+    if(item.hasTwoSide) extra+=`<select onchange="stdSel[${i}].side=this.value;renderSTD()"><option value="แบบด้านเดียว"${s.side==='แบบด้านเดียว'?' selected':''}>แบบด้านเดียว</option><option value="แบบสองด้าน"${s.side==='แบบสองด้าน'?' selected':''}>แบบสองด้าน</option></select>`;
+    row.innerHTML=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div class="i-name">${item.label}</div>
+        <div class="i-sub">${item.base} บาท${!item.noCoat?' / เคลือบ +'+item.coat+' บาท':''}</div>
+        <div class="sel-row">
+          ${!item.noCoat?`<select onchange="stdSel[${i}].coat=this.value; if(this.value!=='ไม่เคลือบ'&&stdSel[${i}].qty>0&&stdSel[${i}].qty<10)stdSel[${i}].qty=10; renderSTD()"><option value="ไม่เคลือบ">ไม่เคลือบ</option>${COATS.map(c=>`<option value="${c}"${s.coat===c?' selected':''}>${c}</option>`).join('')}</select>`:''}
+          ${extra}
+        </div>
+        <div class="qty-row">
+          <span class="qty-lbl">จำนวน</span>
+          <input class="qty-inp" type="number" min="0" max="999" value="${s.qty}" onchange="stdSel[${i}].qty=this.value>0?Math.max(minQty(stdSel[${i}].coat),+this.value):0;renderSTD()">
+          <span class="qty-lbl">ใบ</span>
+        </div>
+        ${minQtyCoatMsg(s.coat)}
+      </div>
+      <span class="p-badge${price>0?' on':''}">${price>0?price.toFixed(2)+' ฿':'-'}</span>`;
+    c.appendChild(row);
+  });
+  recalc();
+}
+
+// ===== RENDER CUSTOM =====
+function renderCustom(){
+  const c=document.getElementById('custom-rows'); c.innerHTML='';
+  customItems.forEach((item,i)=>{
+    const bp=calcCustom(item.w,item.h);
+    const ca=item.coat!=='ไม่เคลือบ'?Math.max(2,+(bp*0.5).toFixed(2)):0;
+    const unitP=bp+ca, total=unitP*item.qty;
+    const row=document.createElement('div'); row.className='item-row';
+    row.innerHTML=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div class="i-name">Custom ขนาด</div>
+        <div class="inner-box">
+          <div class="qty-row" style="margin-bottom:8px;">
+            <span class="qty-lbl">กว้าง</span>
+            <input class="qty-inp" type="number" min="1" max="21" step="0.1" value="${item.w}" onchange="customItems[${i}].w=+this.value||1;renderCustom()"> cm
+            <span class="qty-lbl">× ยาว</span>
+            <input class="qty-inp" type="number" min="1" max="29.7" step="0.1" value="${item.h}" onchange="customItems[${i}].h=+this.value||1;renderCustom()"> cm
+          </div>
+          <select style="width:100%;margin-bottom:8px;" onchange="customItems[${i}].coat=this.value; if(this.value!=='ไม่เคลือบ'&&customItems[${i}].qty<10)customItems[${i}].qty=10; renderCustom()">
+            <option value="ไม่เคลือบ">ไม่เคลือบ</option>
+            ${COATS.map(cn=>`<option value="${cn}"${item.coat===cn?' selected':''}>${cn}</option>`).join('')}
+          </select>
+          <div class="qty-row">
+            <span class="qty-lbl">จำนวน</span>
+            <input class="qty-inp" type="number" min="1" max="999" value="${item.qty}" onchange="customItems[${i}].qty=item.coat!=='ไม่เคลือบ'?Math.max(10,+this.value||1):(+this.value||1);renderCustom()">
+            <span class="qty-lbl">ใบ</span>
+          </div>
+          <div style="margin-top:6px;font-size:12px;color:#aaa;">ราคา/ใบ: <span style="color:#c0533a;font-weight:700;">${unitP.toFixed(2)} บาท</span> (${(item.w*item.h).toFixed(1)} ตร.ซม.)</div>
+          ${item.coat!=='ไม่เคลือบ'?'<span class="warn">⚠️ เคลือบขั้นต่ำ 10 ใบ/ลาย</span>':''}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        <span class="p-badge on">${total.toFixed(2)} ฿</span>
+        <button class="rm-btn" onclick="customItems.splice(${i},1);renderCustom()">ลบ</button>
+      </div>`;
+    c.appendChild(row);
+  });
+  recalc();
+}
+
+// ===== RENDER EXTRA =====
+function renderExtra(){
+  // Photocard
+  const cp=document.getElementById('pc-rows'); cp.innerHTML='';
+  pcItems.forEach((s,i)=>{
+    const pt=PC_TYPES[s.typeIdx];
+    const price=pt.price*s.qty;
+    const row=document.createElement('div'); row.className='item-row';
+    row.innerHTML=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div style="display:flex;justify-content:space-between;">
+          <div class="i-name">Photocard</div>
+          ${pcItems.length>1?`<button class="rm-btn" onclick="pcItems.splice(${i},1);renderExtra()">ลบ</button>`:''}
+        </div>
+        <div class="sel-row">
+          <select onchange="pcItems[${i}].typeIdx=+this.value;renderExtra()">
+            ${PC_TYPES.map((t,idx)=>`<option value="${idx}"${s.typeIdx===idx?' selected':''}>${t.label} (${t.price} ฿)</option>`).join('')}
+          </select>
+          <select onchange="pcItems[${i}].coat=this.value;renderExtra()">
+            ${COATS.map(c=>`<option value="${c}"${s.coat===c?' selected':''}>${c}</option>`).join('')}
+          </select>
+        </div>
+        <div class="i-sub">${PC_TYPES[s.typeIdx].desc}</div>
+        <div class="qty-row">
+          <span class="qty-lbl">จำนวน</span>
+          <input class="qty-inp" type="number" min="0" max="9999" value="${s.qty}" onchange="pcItems[${i}].qty=+this.value;renderExtra()">
+          <span class="qty-lbl">ใบ</span>
+        </div>
+        <span class="warn">⚠️ คละลายเคลือบขั้นต่ำ 10 ใบ</span>
+      </div>
+      <span class="p-badge${price>0?' on':''}">${price>0?price.toFixed(2)+' ฿':'-'}</span>`;
+    cp.appendChild(row);
+  });
+
+  // Memo
+  const cm=document.getElementById('memo-rows'); cm.innerHTML='';
+  memoItems.forEach((s,i)=>{
+    const opt=MEMO_OPTS[s.optIdx];
+    const price=opt.price*s.qty;
+    const row=document.createElement('div'); row.className='item-row';
+    row.innerHTML=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div style="display:flex;justify-content:space-between;">
+          <div class="i-name">Memo Pad</div>
+          ${memoItems.length>1?`<button class="rm-btn" onclick="memoItems.splice(${i},1);renderExtra()">ลบ</button>`:''}
+        </div>
+        <select onchange="memoItems[${i}].optIdx=+this.value;renderExtra()">
+          ${MEMO_OPTS.map((o,idx)=>`<option value="${idx}"${s.optIdx===idx?' selected':''}>${o.sheets} แผ่น/ก้อน = ${o.price} บาท/ก้อน</option>`).join('')}
+        </select>
+        <div class="qty-row">
+          <span class="qty-lbl">จำนวน (ขั้นต่ำ 6)</span>
+          <input class="qty-inp" type="number" min="6" max="999" value="${s.qty}" onchange="memoItems[${i}].qty=Math.max(6,+this.value||6);renderExtra()">
+          <span class="qty-lbl">ก้อน × ${opt.price} ฿</span>
+        </div>
+      </div>
+      <span class="p-badge${price>0?' on':''}">${price>0?price.toFixed(2)+' ฿':'-'}</span>`;
+    cm.appendChild(row);
+  });
+
+  // Keychain Photo
+  const ck=document.getElementById('kp-rows'); ck.innerHTML='';
+  kpItems.forEach((s,i)=>{
+    const unitP=KP_BASE+(s.coat!=='ไม่เคลือบ'?KP_COAT:0);
+    const price=unitP*s.qty;
+    const row=document.createElement('div'); row.className='item-row';
+    row.innerHTML=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div style="display:flex;justify-content:space-between;">
+          <div class="i-name">พวงกุญแจรูป 2×2 นิ้ว</div>
+          ${kpItems.length>1?`<button class="rm-btn" onclick="kpItems.splice(${i},1);renderExtra()">ลบ</button>`:''}
+        </div>
+        <select onchange="kpItems[${i}].coat=this.value; if(this.value!=='ไม่เคลือบ'&&kpItems[${i}].qty>0&&kpItems[${i}].qty<${KP_COAT_MIN})kpItems[${i}].qty=${KP_COAT_MIN}; renderExtra()">
+          <option value="ไม่เคลือบ"${s.coat==='ไม่เคลือบ'?' selected':''}>ไม่เคลือบ (${KP_BASE} ฿/ชิ้น)</option>
+          ${COATS.map(c=>`<option value="${c}"${s.coat===c?' selected':''}>${c} (${KP_BASE+KP_COAT} ฿/ชิ้น)</option>`).join('')}
+        </select>
+        <div class="qty-row">
+          <span class="qty-lbl">จำนวน</span>
+          <input class="qty-inp" type="number" min="0" max="999" value="${s.qty}" onchange="kpItems[${i}].qty=this.value>0?(s.coat!=='ไม่เคลือบ'?Math.max(${KP_COAT_MIN},+this.value):+this.value):0;renderExtra()">
+          <span class="qty-lbl">ชิ้น</span>
+        </div>
+        ${s.coat!=='ไม่เคลือบ'?'<span class="warn">⚠️ เคลือบขั้นต่ำ 10 ชิ้น/ลาย</span>':''}
+      </div>
+      <span class="p-badge${price>0?' on':''}">${price>0?price.toFixed(2)+' ฿':'-'}</span>`;
+    ck.appendChild(row);
+  });
+
+  // Keychain Diecut
+  const kd=document.getElementById('kd-rows'); kd.innerHTML='';
+  kdItems.forEach((s,i)=>{
+    const price=KD_PRICE*s.qty;
+    const row=document.createElement('div'); row.className='item-row';
+    row.innerHTML=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div style="display:flex;justify-content:space-between;">
+          <div class="i-name">พวงกุญแจ Die-cut</div>
+          ${kdItems.length>1?`<button class="rm-btn" onclick="kdItems.splice(${i},1);renderExtra()">ลบ</button>`:''}
+        </div>
+        <select onchange="kdItems[${i}].coat=this.value;renderExtra()">
+          ${COATS.map(c=>`<option value="${c}"${s.coat===c?' selected':''}>${c}</option>`).join('')}
+        </select>
+        <div class="qty-row">
+          <span class="qty-lbl">จำนวน (ขั้นต่ำ ${KD_MIN})</span>
+          <input class="qty-inp" type="number" min="${KD_MIN}" max="9999" value="${s.qty}" onchange="kdItems[${i}].qty=Math.max(${KD_MIN},+this.value||${KD_MIN});renderExtra()">
+          <span class="qty-lbl">ชิ้น × ${KD_PRICE} ฿</span>
+        </div>
+        <span class="warn">⚠️ ขั้นต่ำ ${KD_MIN} ชิ้น/ลาย</span>
+      </div>
+      <span class="p-badge${price>0?' on':''}">${price>0?price.toFixed(2)+' ฿':'-'}</span>`;
+    kd.appendChild(row);
+  });
+  recalc();
+}
+
+// ===== RENDER DIECUT =====
+function renderDiecut(){
+  const c50=document.getElementById('dc50-rows'); c50.innerHTML='';
+  dc50Items.forEach((s,i)=>{
+    const sz=DC50_SIZES[s.sizeIdx];
+    const isSpec=SPECIAL_COATS.includes(s.coat);
+    const unitP=isSpec?sz.special:sz.clear;
+    const price=unitP*s.sheets;
+    const row=document.createElement('div'); row.className='item-row';
+    row.innerHTML=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div style="display:flex;justify-content:space-between;">
+          <div class="i-name">Die-cut 50%</div>
+          ${dc50Items.length>1?`<button class="rm-btn" onclick="dc50Items.splice(${i},1);renderDiecut()">ลบ</button>`:''}
+        </div>
+        <div class="sel-row">
+          <select onchange="dc50Items[${i}].sizeIdx=+this.value;renderDiecut()">
+            ${DC50_SIZES.map((sz2,idx)=>`<option value="${idx}"${s.sizeIdx===idx?' selected':''}>${sz2.size} (ใสเงา ${sz2.clear}฿ / พิเศษ ${sz2.special}฿)</option>`).join('')}
+          </select>
+          <select onchange="dc50Items[${i}].coat=this.value;renderDiecut()">
+            <option value="เคลือบใสเงา"${s.coat==='เคลือบใสเงา'?' selected':''}>เคลือบใสเงา</option>
+            ${SPECIAL_COATS.map(c=>`<option value="${c}"${s.coat===c?' selected':''}>${c}</option>`).join('')}
+          </select>
+        </div>
+        <div class="qty-row">
+          <span class="qty-lbl">จำนวน</span>
+          <input class="qty-inp" type="number" min="1" max="99" value="${s.sheets}" onchange="dc50Items[${i}].sheets=+this.value||1;renderDiecut()">
+          <span class="qty-lbl">แผ่น × ${unitP} ฿</span>
+        </div>
+        <div class="i-sub">คละได้ 2 ลาย/แผ่น • PP Glossy + เคลือบ PVC</div>
+      </div>
+      <span class="p-badge${price>0?' on':''}">${price>0?price.toFixed(2)+' ฿':'-'}</span>`;
+    c50.appendChild(row);
+  });
+
+  const c100=document.getElementById('dc100-rows'); c100.innerHTML='';
+  dc100Items.forEach((s,i)=>{
+    const isSpec=SPECIAL_COATS.includes(s.coat);
+    const unitP=isSpec?DC100_SPECIAL:DC100_CLEAR;
+    const price=unitP*s.sheets;
+    const row=document.createElement('div'); row.className='item-row';
+    row.innerHTML=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div style="display:flex;justify-content:space-between;">
+          <div class="i-name">Die-cut 100% A4</div>
+          ${dc100Items.length>1?`<button class="rm-btn" onclick="dc100Items.splice(${i},1);renderDiecut()">ลบ</button>`:''}
+        </div>
+        <select onchange="dc100Items[${i}].coat=this.value;renderDiecut()">
+          <option value="เคลือบใสเงา"${s.coat==='เคลือบใสเงา'?' selected':''}>เคลือบใสเงา (${DC100_CLEAR} ฿/แผ่น)</option>
+          ${SPECIAL_COATS.map(c=>`<option value="${c}"${s.coat===c?' selected':''}>${c} (${DC100_SPECIAL} ฿/แผ่น)</option>`).join('')}
+        </select>
+        <div class="qty-row">
+          <span class="qty-lbl">จำนวน</span>
+          <input class="qty-inp" type="number" min="1" max="99" value="${s.sheets}" onchange="dc100Items[${i}].sheets=+this.value||1;renderDiecut()">
+          <span class="qty-lbl">แผ่น × ${unitP} ฿</span>
+        </div>
+        <div class="i-sub">คละได้ 2 ลาย/แผ่น</div>
+      </div>
+      <span class="p-badge${price>0?' on':''}">${price>0?price.toFixed(2)+' ฿':'-'}</span>`;
+    c100.appendChild(row);
+  });
+  recalc();
+}
+
+// ===== RENDER SSET =====
+function renderSset(){
+  const bagEl=document.getElementById('bag-sel');
+  bagEl.innerHTML='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px;"><span style="font-size:12px;color:#b07060;font-weight:600;">ถุงฟรี:</span>'+
+    BAG_OPTS.map(b=>`<label class="bag-lbl${bagChoice===b?' sel':''}" onclick="bagChoice='${b}';renderSset()"><input type="radio" name="bag" ${bagChoice===b?'checked':''} style="margin-right:2px;">${b}</label>`).join('')+'</div>'+
+    '<div class="qty-row" style="margin-bottom:12px;padding:9px 12px;background:#fff8f5;border-radius:10px;border:1px solid #f0d8d0;">'+
+    '<span class="qty-lbl" style="font-size:13px;font-weight:600;color:#b07060;">จำนวนเซ็ต</span>'+
+    `<input class="qty-inp" type="number" min="1" max="999" value="${ssetQty}" onchange="ssetQty=+this.value||1;renderSset()">` +
+    '<span class="qty-lbl">เซ็ต</span></div>';
+  const c=document.getElementById('sset-rows'); c.innerHTML='';
+  ssetItems.forEach((s,i)=>{
+    const sz=SSET_SIZES[s.sizeIdx];
+    const unitP=s.coat==='เคลือบใสเงา'?sz.clear:sz.special;
+    const total=unitP*s.qty*ssetQty;
+    const hasFree=(unitP*s.qty)>=5;
+    const row=document.createElement('div'); row.className='item-row';
+    row.innerHTML=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div style="display:flex;justify-content:space-between;">
+          <div class="i-name">Sticker ชิ้นที่ ${i+1}</div>
+          ${ssetItems.length>1?`<button class="rm-btn" onclick="ssetItems.splice(${i},1);renderSset()">ลบ</button>`:''}
+        </div>
+        <div class="sel-row">
+          <select onchange="ssetItems[${i}].sizeIdx=+this.value;renderSset()">
+            ${SSET_SIZES.map((z,idx)=>`<option value="${idx}"${s.sizeIdx===idx?' selected':''}>${z.size}</option>`).join('')}
+          </select>
+          <select onchange="ssetItems[${i}].coat=this.value;renderSset()">
+            <option value="เคลือบใสเงา"${s.coat==='เคลือบใสเงา'?' selected':''}>เคลือบใสเงา (${sz.clear}฿/ชิ้น)</option>
+            ${SPECIAL_COATS.map(cn=>`<option value="${cn}"${s.coat===cn?' selected':''}>${cn} (${sz.special}฿/ชิ้น)</option>`).join('')}
+          </select>
+        </div>
+        <div class="qty-row">
+          <span class="qty-lbl">จำนวน/เซ็ต</span>
+          <input class="qty-inp" type="number" min="1" max="9999" value="${s.qty}" onchange="ssetItems[${i}].qty=+this.value||1;renderSset()">
+          <span class="qty-lbl">ชิ้น</span>
+        </div>
+        <div style="font-size:11px;margin-top:4px;${hasFree?'color:#3B6D11;':'color:#bbb;'}">
+          ${hasFree?`🎁 ฟรี${bagChoice}!`:`ยอด/เซ็ต ≥ 5 บาท รับฟรี${bagChoice}`}
+        </div>
+        <div style="font-size:11px;color:#aaa;">รวม ${ssetQty} เซ็ต = ${total.toFixed(2)} ฿</div>
+      </div>
+      <span class="p-badge${total>0?' on':''}">${total>0?total.toFixed(2)+' ฿':'-'}</span>`;
+    c.appendChild(row);
+  });
+  const pc=document.getElementById('pkg-rows'); pc.innerHTML='';
+  PKG_ITEMS.forEach((item,i)=>{
+    const p=item.price*ssetQty;
+    const row=document.createElement('div'); row.className='item-row';
+    row.innerHTML=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div class="i-name">${item.label}</div>
+        <div class="i-sub">${item.price} บาท/เซ็ต × ${ssetQty} เซ็ต = ${p} บาท</div>
+        <select onchange="pkgSel[${i}].include=this.value==='yes';renderSset()">
+          <option value="no">ไม่เพิ่ม</option>
+          <option value="yes"${pkgSel[i].include?' selected':''}>เพิ่ม (+${p} ฿)</option>
+        </select>
+      </div>
+      <span class="p-badge${pkgSel[i].include?' on':''}">${pkgSel[i].include?p.toFixed(2)+' ฿':'-'}</span>`;
+    pc.appendChild(row);
+  });
+  recalc();
+}
+
+// ===== RENDER GIFT =====
+function renderGift(){
+  const c=document.getElementById('gift-rows'); c.innerHTML='';
+  giftItems.forEach((s,i)=>{
+    const {t,needsMin10}=calcGiftTotal(s);
+    const minSetQty=needsMin10?10:1;
+    if(s.setQty>0&&s.setQty<minSetQty){giftItems[i].setQty=minSetQty;s.setQty=minSetQty;}
+    const pi=STD_ITEMS[s.printIdx];
+    const pU=pi.base+(s.printCoat!=='ไม่เคลือบ'?pi.coat:0);
+    const sz=SSET_SIZES[s.stickerSizeIdx];
+    const sU=s.stickerCoat==='เคลือบใสเงา'?sz.clear:sz.special;
+    const row=document.createElement('div'); row.className='item-row';
+    let html=`
+      <span class="i-num">${i+1}</span>
+      <div class="i-inner">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div class="i-name">เซ็ตที่ ${i+1} 🎁</div>
+          ${giftItems.length>1?`<button class="rm-btn" onclick="giftItems.splice(${i},1);renderGift()">ลบ</button>`:''}
+        </div>
+        <div class="inner-box">
+          <div class="qty-row" style="margin-bottom:10px;padding:8px;background:#fff;border-radius:8px;border:1px solid #f0e6e0;">
+            <span class="qty-lbl" style="font-weight:600;color:#b07060;">จำนวนเซ็ต</span>
+            <input class="qty-inp" type="number" min="1" max="999" value="${s.setQty}" onchange="giftItems[${i}].setQty=+this.value||1;renderGift()">
+            <span class="qty-lbl">เซ็ต</span>
+          </div>
+          ${needsMin10?'<span class="warn">⚠️ มีสต๊ก/การ์ด/เมโม — ขั้นต่ำ 10 เซ็ต</span>':''}
+
+          <div style="font-size:12px;font-weight:600;color:#b07060;margin-bottom:6px;">🖼 รูปอัด</div>
+          <select style="width:100%;margin-bottom:6px;" onchange="giftItems[${i}].printIdx=+this.value;renderGift()">
+            ${STD_ITEMS.map((it,idx)=>`<option value="${idx}"${s.printIdx===idx?' selected':''}>${it.label}</option>`).join('')}
+          </select>
+          <div class="sel-row" style="margin-bottom:10px;">
+            <select onchange="giftItems[${i}].printCoat=this.value;renderGift()">
+              <option value="ไม่เคลือบ">ไม่เคลือบ</option>
+              ${COATS.map(cn=>`<option value="${cn}"${s.printCoat===cn?' selected':''}>${cn}</option>`).join('')}
+            </select>
+            <input class="qty-inp" type="number" min="1" max="999" value="${s.printQty}" onchange="giftItems[${i}].printQty=+this.value||1;renderGift()">
+            <span class="qty-lbl">ใบ × ${pU.toFixed(2)}฿</span>
+          </div>
+
+          <div style="font-size:12px;font-weight:600;color:#b07060;margin-bottom:6px;">🏷 Sticker Set</div>
+          <div class="sel-row" style="margin-bottom:10px;">
+            <select onchange="giftItems[${i}].stickerSizeIdx=+this.value;renderGift()">
+              ${SSET_SIZES.map((z,idx)=>`<option value="${idx}"${s.stickerSizeIdx===idx?' selected':''}>${z.size}</option>`).join('')}
+            </select>
+            <select onchange="giftItems[${i}].stickerCoat=this.value;renderGift()">
+              <option value="เคลือบใสเงา"${s.stickerCoat==='เคลือบใสเงา'?' selected':''}>เคลือบใสเงา</option>
+              ${SPECIAL_COATS.map(cn=>`<option value="${cn}"${s.stickerCoat===cn?' selected':''}>${cn}</option>`).join('')}
+            </select>
+            <input class="qty-inp" type="number" min="1" max="9999" value="${s.stickerQty}" onchange="giftItems[${i}].stickerQty=+this.value||1;renderGift()">
+            <span class="qty-lbl">ชิ้น × ${sU.toFixed(2)}฿</span>
+          </div>
+
+          <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;cursor:pointer;font-size:12px;font-weight:600;color:#b07060;">
+            <input type="checkbox" ${s.hasDc50?'checked':''} onchange="giftItems[${i}].hasDc50=this.checked;renderGift()"> ✂️ เพิ่ม Die-cut 50%
+          </label>`;
+    if(s.hasDc50){
+      const dc=GIFT_DC50[s.dc50SizeIdx];
+      const dcU=SPECIAL_COATS.includes(s.dc50Coat)?dc.special:dc.clear;
+      html+=`<div class="sel-row" style="margin-bottom:10px;">
+        <select onchange="giftItems[${i}].dc50SizeIdx=+this.value;renderGift()">
+          ${GIFT_DC50.map((dc2,idx)=>`<option value="${idx}"${s.dc50SizeIdx===idx?' selected':''}>${dc2.size}(ใสเงา${dc2.clear}/พิเศษ${dc2.special}฿)</option>`).join('')}
+        </select>
+        <select onchange="giftItems[${i}].dc50Coat=this.value;renderGift()">
+          <option value="เคลือบใสเงา"${s.dc50Coat==='เคลือบใสเงา'?' selected':''}>เคลือบใสเงา</option>
+          ${SPECIAL_COATS.map(cn=>`<option value="${cn}"${s.dc50Coat===cn?' selected':''}>${cn}</option>`).join('')}
+        </select>
+        <input class="qty-inp" type="number" min="1" max="99" value="${s.dc50Qty}" onchange="giftItems[${i}].dc50Qty=+this.value||1;renderGift()">
+        <span class="qty-lbl">แผ่น×${dcU}฿</span>
+      </div>`;
+    }
+    html+=`<label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;cursor:pointer;font-size:12px;font-weight:600;color:#b07060;">
+            <input type="checkbox" ${s.hasPC?'checked':''} onchange="giftItems[${i}].hasPC=this.checked;renderGift()"> 🃏 เพิ่ม Photocard
+          </label>`;
+    if(s.hasPC){
+      html+=`<div class="sel-row" style="margin-bottom:10px;">
+        <select onchange="giftItems[${i}].pcTypeIdx=+this.value;renderGift()">
+          ${PC_TYPES.map((pt,idx)=>`<option value="${idx}"${s.pcTypeIdx===idx?' selected':''}>${pt.label}(${pt.price}฿)</option>`).join('')}
+        </select>
+        <select onchange="giftItems[${i}].pcCoat=this.value;renderGift()">
+          ${COATS.map(cn=>`<option value="${cn}"${s.pcCoat===cn?' selected':''}>${cn}</option>`).join('')}
+        </select>
+        <input class="qty-inp" type="number" min="1" max="999" value="${s.pcQty}" onchange="giftItems[${i}].pcQty=+this.value||1;renderGift()">
+        <span class="qty-lbl">ใบ</span>
+      </div>`;
+    }
+    html+=`<label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;cursor:pointer;font-size:12px;font-weight:600;color:#b07060;">
+            <input type="checkbox" ${s.hasMemo?'checked':''} onchange="giftItems[${i}].hasMemo=this.checked;renderGift()"> 📝 เพิ่ม Memo Pad
+          </label>`;
+    if(s.hasMemo){
+      html+=`<div class="sel-row" style="margin-bottom:10px;">
+        <select onchange="giftItems[${i}].memoOptIdx=+this.value;renderGift()">
+          ${MEMO_OPTS.map((o,idx)=>`<option value="${idx}"${s.memoOptIdx===idx?' selected':''}>${o.sheets}แผ่น/ก้อน(${o.price}฿)</option>`).join('')}
+        </select>
+        <input class="qty-inp" type="number" min="1" max="999" value="${s.memoQty}" onchange="giftItems[${i}].memoQty=+this.value||1;renderGift()">
+        <span class="qty-lbl">ก้อน</span>
+      </div>`;
+    }
+    html+=`<label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;cursor:pointer;font-size:12px;font-weight:600;color:#b07060;">
+            <input type="checkbox" ${s.hasKP?'checked':''} onchange="giftItems[${i}].hasKP=this.checked;renderGift()"> 🔑 เพิ่มพวงกุญแจรูป
+          </label>`;
+    if(s.hasKP){
+      html+=`<div class="sel-row" style="margin-bottom:10px;">
+        <select onchange="giftItems[${i}].kpCoat=this.value;renderGift()">
+          <option value="ไม่เคลือบ"${s.kpCoat==='ไม่เคลือบ'?' selected':''}>ไม่เคลือบ(${KP_BASE}฿)</option>
+          ${COATS.map(cn=>`<option value="${cn}"${s.kpCoat===cn?' selected':''}>${cn}(${KP_BASE+KP_COAT}฿)</option>`).join('')}
+        </select>
+        <input class="qty-inp" type="number" min="1" max="999" value="${s.kpQty}" onchange="giftItems[${i}].kpQty=+this.value||1;renderGift()">
+        <span class="qty-lbl">ชิ้น</span>
+      </div>`;
+    }
+    html+=`<label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;cursor:pointer;font-size:12px;font-weight:600;color:#b07060;">
+            <input type="checkbox" ${s.hasKD?'checked':''} onchange="giftItems[${i}].hasKD=this.checked;renderGift()"> 🔑 เพิ่มพวงกุญแจ Die-cut
+          </label>`;
+    if(s.hasKD){
+      html+=`<div class="sel-row" style="margin-bottom:6px;">
+        <select onchange="giftItems[${i}].kdCoat=this.value;renderGift()">
+          ${COATS.map(cn=>`<option value="${cn}"${s.kdCoat===cn?' selected':''}>${cn}</option>`).join('')}
+        </select>
+        <input class="qty-inp" type="number" min="1" max="999" value="${s.kdQty}" onchange="giftItems[${i}].kdQty=+this.value||1;renderGift()">
+        <span class="qty-lbl">ชิ้น×${KD_PRICE}฿</span>
+      </div>`;
+    }
+    html+=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid #f0e6e0;display:flex;justify-content:space-between;font-size:12px;">
+            <span style="color:#aaa;">รวม ${s.setQty} เซ็ต</span>
+            <span style="color:#c0533a;font-weight:700;">${(t*s.setQty).toFixed(2)} บาท</span>
+          </div>
+        </div>
+      </div>
+      <span class="p-badge${t>0?' on':''}">${t>0?(t*s.setQty).toFixed(2)+' ฿':'-'}</span>`;
+    row.innerHTML=html;
+    c.appendChild(row);
+  });
+  recalc();
+}
+
+// ===== RECALC =====
+function recalc(){
+  let sub=0, hasPrint=false, hasSticker=false;
+  ID_ITEMS.forEach((item,i)=>{ const s=idSel[i]; if(s.qty<=0)return; sub+=(item.base+(s.coat!=='ไม่เคลือบ'?item.coat:0))*s.qty; hasPrint=true; });
+  STD_ITEMS.forEach((item,i)=>{ const s=stdSel[i]; if(s.qty<=0)return; let u=item.base; if(!item.noCoat&&s.coat!=='ไม่เคลือบ')u+=item.coat; if(item.hasTwoSide&&s.side==='แบบสองด้าน')u=s.coat!=='ไม่เคลือบ'?item.twoSideCoat:item.twoSide; sub+=u*s.qty; hasPrint=true; });
+  customItems.forEach(item=>{ const bp=calcCustom(item.w,item.h); const ca=item.coat!=='ไม่เคลือบ'?Math.max(2,+(bp*0.5).toFixed(2)):0; sub+=(bp+ca)*item.qty; hasPrint=true; });
+  pcItems.forEach(s=>{ if(s.qty>0){sub+=PC_TYPES[s.typeIdx].price*s.qty;hasPrint=true;} });
+  memoItems.forEach(s=>{ if(s.qty>0){sub+=MEMO_OPTS[s.optIdx].price*s.qty;hasPrint=true;} });
+  kpItems.forEach(s=>{ if(s.qty>0){sub+=(KP_BASE+(s.coat!=='ไม่เคลือบ'?KP_COAT:0))*s.qty;hasPrint=true;} });
+  kdItems.forEach(s=>{ if(s.qty>0){sub+=KD_PRICE*s.qty;hasPrint=true;} });
+  dc50Items.forEach(s=>{ const sz=DC50_SIZES[s.sizeIdx]; sub+=(SPECIAL_COATS.includes(s.coat)?sz.special:sz.clear)*s.sheets; hasSticker=true; });
+  dc100Items.forEach(s=>{ sub+=(SPECIAL_COATS.includes(s.coat)?DC100_SPECIAL:DC100_CLEAR)*s.sheets; hasSticker=true; });
+  ssetItems.forEach(s=>{ const sz=SSET_SIZES[s.sizeIdx]; sub+=(s.coat==='เคลือบใสเงา'?sz.clear:sz.special)*s.qty*ssetQty; hasSticker=true; });
+  PKG_ITEMS.forEach((item,i)=>{ if(pkgSel[i].include) sub+=item.price*ssetQty; });
+  giftItems.forEach(s=>{ const {t}=calcGiftTotal(s); if(t>0){sub+=t*s.setQty;hasPrint=true;hasSticker=true;} });
+
+  const sc=shipMethod==='post'?40:0;
+  document.getElementById('sub-disp').textContent=sub.toFixed(2)+' บาท';
+  document.getElementById('ship-disp').textContent=shipMethod==='post'?'40.00 บาท':'จ่ายปลายทาง';
+  document.getElementById('total-disp').textContent=(sub+sc).toFixed(2)+' บาท';
+
+  let dTxt='', dSub='';
+  if(!hasPrint&&!hasSticker){dTxt='กรุณาเลือกสินค้าก่อน';dSub='ระยะเวลาจะแสดงหลังเลือกรายการ';}
+  else if(hasPrint&&!hasSticker){dTxt='รอบจัดส่ง: 2 วัน หลังโอน';dSub='สำหรับงานพิมพ์รูปเท่านั้น';}
+  else if(!hasPrint&&hasSticker){dTxt='รอบจัดส่ง: 7 วัน หลังโอน';dSub='สำหรับงานสติ๊กเกอร์เท่านั้น';}
+  else{dTxt='รอบจัดส่ง: 7 วัน หลังโอน';dSub='มีทั้งงานรูปและสต๊กเกอร์';}
+  document.getElementById('del-txt').textContent=dTxt;
+  document.getElementById('del-sub').textContent=dSub;
+}
+
+// ===== COPY =====
+function copyOrder(){
+  let lines=['📸 Polaroid_tamsung — สรุปออเดอร์',''];
+  let sub=0, hasPrint=false, hasSticker=false;
+  let idL=[],stdL=[],custL=[],pcL=[],memoL=[],kpL=[],kdL=[],dc50L=[],dc100L=[],ssetL=[],pkgL=[],giftL=[];
+
+  ID_ITEMS.forEach((item,i)=>{ const s=idSel[i];if(s.qty<=0)return; const p=(item.base+(s.coat!=='ไม่เคลือบ'?item.coat:0))*s.qty; idL.push(`• ${item.label} | ${s.coat} | ${s.frame} x${s.qty} = ${p.toFixed(2)} บาท`);sub+=p;hasPrint=true; });
+  STD_ITEMS.forEach((item,i)=>{ const s=stdSel[i];if(s.qty<=0)return; let u=item.base;if(!item.noCoat&&s.coat!=='ไม่เคลือบ')u+=item.coat;if(item.hasTwoSide&&s.side==='แบบสองด้าน')u=s.coat!=='ไม่เคลือบ'?item.twoSideCoat:item.twoSide; const p=u*s.qty; let opt=s.coat;if(item.hasFrame)opt+=` | ${s.frame}`;if(item.hasCorner)opt+=` | ${s.corner==='ตัด'?'ตัดมุม':'ไม่ตัดมุม'}`;if(item.hasTwoSide)opt+=` | ${s.side}`; stdL.push(`• ${item.label} | ${opt} x${s.qty} = ${p.toFixed(2)} บาท`);sub+=p;hasPrint=true; });
+  customItems.forEach(item=>{ const bp=calcCustom(item.w,item.h);const ca=item.coat!=='ไม่เคลือบ'?Math.max(2,+(bp*0.5).toFixed(2)):0;const p=(bp+ca)*item.qty; custL.push(`• Custom ${item.w}x${item.h} cm | ${item.coat} x${item.qty} = ${p.toFixed(2)} บาท`);sub+=p;hasPrint=true; });
+  pcItems.forEach(s=>{ if(s.qty<=0)return; const p=PC_TYPES[s.typeIdx].price*s.qty; pcL.push(`• ${PC_TYPES[s.typeIdx].label} | ${s.coat} x${s.qty} = ${p.toFixed(2)} บาท`);sub+=p;hasPrint=true; });
+  memoItems.forEach(s=>{ if(s.qty<=0)return; const opt=MEMO_OPTS[s.optIdx];const p=opt.price*s.qty; memoL.push(`• Memo Pad ${opt.sheets} แผ่น/ก้อน x${s.qty} ก้อน = ${p.toFixed(2)} บาท`);sub+=p;hasPrint=true; });
+  kpItems.forEach(s=>{ if(s.qty<=0)return; const u=KP_BASE+(s.coat!=='ไม่เคลือบ'?KP_COAT:0);const p=u*s.qty; kpL.push(`• พวงกุญแจรูป 2x2 | ${s.coat} x${s.qty} = ${p.toFixed(2)} บาท`);sub+=p;hasPrint=true; });
+  kdItems.forEach(s=>{ if(s.qty<=0)return; const p=KD_PRICE*s.qty; kdL.push(`• พวงกุญแจ Die-cut | ${s.coat} x${s.qty} = ${p.toFixed(2)} บาท`);sub+=p;hasPrint=true; });
+  dc50Items.forEach(s=>{ const sz=DC50_SIZES[s.sizeIdx];const u=SPECIAL_COATS.includes(s.coat)?sz.special:sz.clear;const p=u*s.sheets; dc50L.push(`• Die-cut 50% ${sz.size} | ${s.coat} x${s.sheets} แผ่น = ${p.toFixed(2)} บาท`);sub+=p;hasSticker=true; });
+  dc100Items.forEach(s=>{ const u=SPECIAL_COATS.includes(s.coat)?DC100_SPECIAL:DC100_CLEAR;const p=u*s.sheets; dc100L.push(`• Die-cut 100% A4 | ${s.coat} x${s.sheets} แผ่น = ${p.toFixed(2)} บาท`);sub+=p;hasSticker=true; });
+  if(ssetItems.length>0){ssetL.push(`• จำนวน ${ssetQty} เซ็ต`);}
+  ssetItems.forEach((s,i)=>{ const sz=SSET_SIZES[s.sizeIdx];const u=s.coat==='เคลือบใสเงา'?sz.clear:sz.special;const p=u*s.qty*ssetQty;const freeNote=(u*s.qty)>=5?` (ฟรี${bagChoice})`:''; ssetL.push(`  ชิ้นที่${i+1}: ${sz.size} ${s.coat} x${s.qty}/เซ็ต = ${p.toFixed(2)} บาท${freeNote}`);sub+=p;hasSticker=true; });
+  PKG_ITEMS.forEach((item,i)=>{ if(!pkgSel[i].include)return; const p=item.price*ssetQty; pkgL.push(`• ${item.label} x${ssetQty} เซ็ต = ${p.toFixed(2)} บาท`);sub+=p; });
+  giftItems.forEach((s,si)=>{ const pi=STD_ITEMS[s.printIdx];const pu=pi.base+(s.printCoat!=='ไม่เคลือบ'?pi.coat:0);const sz=SSET_SIZES[s.stickerSizeIdx];const su=s.stickerCoat==='เคลือบใสเงา'?sz.clear:sz.special;const t=(pu*s.printQty)+(su*s.stickerQty);if(t>0){giftL.push(`• เซ็ตที่${si+1}: ${pi.label} x${s.printQty} + Sticker ${sz.size} x${s.stickerQty} = ${t.toFixed(2)} บาท`);sub+=t;hasPrint=true;hasSticker=true;} });
+
+  if(idL.length||stdL.length||custL.length){lines.push('🖼 งานพิมพ์รูป');[...idL,...stdL,...custL].forEach(l=>lines.push(l));}
+  if(pcL.length){lines.push('');lines.push('🃏 Photocard');pcL.forEach(l=>lines.push(l));}
+  if(memoL.length){lines.push('');lines.push('📝 Memo Pad');memoL.forEach(l=>lines.push(l));}
+  if(kpL.length||kdL.length){lines.push('');lines.push('🔑 พวงกุญแจ');[...kpL,...kdL].forEach(l=>lines.push(l));}
+  if(dc50L.length||dc100L.length){lines.push('');lines.push('✂️ สต๊กเกอร์ Die-cut');[...dc50L,...dc100L].forEach(l=>lines.push(l));}
+  if(ssetL.length||pkgL.length){lines.push('');lines.push('🏷 สต๊กเกอร์ Set');[...ssetL,...pkgL].forEach(l=>lines.push(l));}
+  if(giftL.length){lines.push('');lines.push('🎁 กิ๊ฟอะเวย์');giftL.forEach(l=>lines.push(l));}
+  lines.push('');
+  lines.push(`🚚 การจัดส่ง: ${shipMethod==='post'?'ไปรษณีย์ (+40 บาท)':'แมสเซ็นเจอร์ (จ่ายปลายทาง)'}`);
+  lines.push(`🗓 รอบจัดส่ง: ${hasPrint&&!hasSticker?'2 วัน หลังโอน':'7 วัน หลังโอน'}`);
+  lines.push('');
+  const sc=shipMethod==='post'?40:0;
+  lines.push(`💰 ค่าสินค้า: ${sub.toFixed(2)} บาท`);
+  lines.push(shipMethod==='post'?`🚚 ค่าจัดส่ง: 40.00 บาท`:`🚚 ค่าจัดส่ง: จ่ายปลายทาง`);
+  lines.push(`✅ รวมทั้งหมด: ${(sub+sc).toFixed(2)} บาท`);
+
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+    const msg=document.getElementById('copy-msg');
+    msg.textContent='✅ คัดลอกแล้ว! วางใน LINE ได้เลย';
+    setTimeout(()=>{msg.textContent='';},2500);
+  });
+}
+
+// Init
+renderID(); renderSTD(); renderCustom(); renderExtra(); renderDiecut(); renderSset(); renderGift(); recalc();
+</script>
+</body>
+</html>
